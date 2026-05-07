@@ -1,0 +1,384 @@
+@import "tailwindcss";
+
+:root {
+  --roast: 153, 88, 42;
+  --origin: 40, 54, 24;
+  --cocoa: 67, 40, 24;
+  --harvest: 255, 230, 167;
+  --trade: 187, 148, 87;
+  --white: 255, 255, 255;
+  --red: 255, 0, 0;
+  --blue: 51, 136, 247;
+  --black: 0, 0, 0;
+}
+
+@theme {
+  --color-*: initial;
+
+  /* ROAST */
+  --color-roast: rgb(var(--roast));
+  --color-roast-90: rgba(var(--roast), 0.9);
+  --color-roast-80: rgba(var(--roast), 0.8);
+  --color-roast-70: rgba(var(--roast), 0.7);
+  --color-roast-60: rgba(var(--roast), 0.6);
+  --color-roast-50: rgba(var(--roast), 0.5);
+  --color-roast-40: rgba(var(--roast), 0.4);
+  --color-roast-30: rgba(var(--roast), 0.3);
+  --color-roast-20: rgba(var(--roast), 0.2);
+  --color-roast-10: rgba(var(--roast), 0.1);
+  --color-roast-5: rgba(var(--roast), 0.05);
+
+  /* ORIGIN */
+  --color-origin: rgb(var(--origin));
+  --color-origin-90: rgba(var(--origin), 0.9);
+  --color-origin-80: rgba(var(--origin), 0.8);
+  --color-origin-70: rgba(var(--origin), 0.7);
+  --color-origin-60: rgba(var(--origin), 0.6);
+  --color-origin-50: rgba(var(--origin), 0.5);
+  --color-origin-40: rgba(var(--origin), 0.4);
+  --color-origin-30: rgba(var(--origin), 0.3);
+  --color-origin-20: rgba(var(--origin), 0.2);
+  --color-origin-10: rgba(var(--origin), 0.1);
+  --color-origin-5: rgba(var(--origin), 0.05);
+
+  /* COCOA */
+  --color-cocoa: rgb(var(--cocoa));
+  --color-cocoa-90: rgba(var(--cocoa), 0.9);
+  --color-cocoa-80: rgba(var(--cocoa), 0.8);
+  --color-cocoa-70: rgba(var(--cocoa), 0.7);
+  --color-cocoa-60: rgba(var(--cocoa), 0.6);
+  --color-cocoa-50: rgba(var(--cocoa), 0.5);
+  --color-cocoa-40: rgba(var(--cocoa), 0.4);
+  --color-cocoa-30: rgba(var(--cocoa), 0.3);
+  --color-cocoa-20: rgba(var(--cocoa), 0.2);
+  --color-cocoa-10: rgba(var(--cocoa), 0.1);
+  --color-cocoa-5: rgba(var(--cocoa), 0.05);
+
+  /* HARVEST */
+  --color-harvest: rgb(var(--harvest));
+  --color-harvest-90: rgba(var(--harvest), 0.9);
+  --color-harvest-80: rgba(var(--harvest), 0.8);
+  --color-harvest-70: rgba(var(--harvest), 0.7);
+  --color-harvest-60: rgba(var(--harvest), 0.6);
+  --color-harvest-50: rgba(var(--harvest), 0.5);
+  --color-harvest-40: rgba(var(--harvest), 0.4);
+  --color-harvest-30: rgba(var(--harvest), 0.3);
+  --color-harvest-20: rgba(var(--harvest), 0.2);
+  --color-harvest-10: rgba(var(--harvest), 0.1);
+  --color-harvest-5: rgba(var(--harvest), 0.05);
+
+  /* TRADE */
+  --color-trade: rgb(var(--trade));
+  --color-trade-90: rgba(var(--trade), 0.9);
+  --color-trade-80: rgba(var(--trade), 0.8);
+  --color-trade-70: rgba(var(--trade), 0.7);
+  --color-trade-60: rgba(var(--trade), 0.6);
+  --color-trade-50: rgba(var(--trade), 0.5);
+  --color-trade-40: rgba(var(--trade), 0.4);
+  --color-trade-30: rgba(var(--trade), 0.3);
+  --color-trade-20: rgba(var(--trade), 0.2);
+  --color-trade-10: rgba(var(--trade), 0.1);
+  --color-trade-5: rgba(var(--trade), 0.05);
+
+  /* WHITE */
+  --color-white: rgb(var(--white));
+  --color-white-90: rgba(var(--white), 0.9);
+  --color-white-80: rgba(var(--white), 0.8);
+  --color-white-70: rgba(var(--white), 0.7);
+  --color-white-60: rgba(var(--white), 0.6);
+  --color-white-50: rgba(var(--white), 0.5);
+  --color-white-40: rgba(var(--white), 0.4);
+  --color-white-30: rgba(var(--white), 0.3);
+  --color-white-20: rgba(var(--white), 0.2);
+  --color-white-10: rgba(var(--white), 0.1);
+  --color-white-5: rgba(var(--white), 0.05);
+
+  /* RED */
+  --color-red: rgb(var(--red));
+  --color-red-90: rgba(var(--red), 0.9);
+  --color-red-80: rgba(var(--red), 0.8);
+  --color-red-70: rgba(var(--red), 0.7);
+  --color-red-60: rgba(var(--red), 0.6);
+  --color-red-50: rgba(var(--red), 0.5);
+  --color-red-40: rgba(var(--red), 0.4);
+  --color-red-30: rgba(var(--red), 0.3);
+  --color-red-20: rgba(var(--red), 0.2);
+  --color-red-10: rgba(var(--red), 0.1);
+  --color-red-5: rgba(var(--red), 0.05);
+
+  /* BLUE */
+  --color-blue: rgb(var(--blue));
+  --color-blue-90: rgba(var(--blue), 0.9);
+  --color-blue-80: rgba(var(--blue), 0.8);
+  --color-blue-70: rgba(var(--blue), 0.7);
+  --color-blue-60: rgba(var(--blue), 0.6);
+  --color-blue-50: rgba(var(--blue), 0.5);
+  --color-blue-40: rgba(var(--blue), 0.4);
+  --color-blue-30: rgba(var(--blue), 0.3);
+  --color-blue-20: rgba(var(--blue), 0.2);
+  --color-blue-10: rgba(var(--blue), 0.1);
+  --color-blue-5: rgba(var(--blue), 0.05);
+
+  /* BLACK */
+    --color-black: rgb(var(--black));
+    --color-black-90: rgba(var(--black), 0.9);
+    --color-black-80: rgba(var(--black), 0.8);
+    --color-black-70: rgba(var(--black), 0.7);
+    --color-black-60: rgba(var(--black), 0.6);
+    --color-black-50: rgba(var(--black), 0.5);
+    --color-black-40: rgba(var(--black), 0.4);
+    --color-black-30: rgba(var(--black), 0.3);
+    --color-black-20: rgba(var(--black), 0.2);
+    --color-black-10: rgba(var(--black), 0.1);
+    --color-black-5: rgba(var(--black), 0.05);
+
+  /* BASE */
+  --spacing-p0: 0px;
+  --spacing-p1: 2px;
+  --spacing-p2: 4px;
+  --spacing-p3: 8px;
+  --spacing-p4: 12px;
+  --spacing-p5: 16px;
+  --spacing-p6: 20px;
+  --spacing-p7: 24px;
+  --spacing-p8: 32px;
+  --spacing-p9: 40px;
+  --spacing-p10: 48px;
+  --spacing-p11: 56px;
+  --spacing-p12: 64px;
+  --spacing-p13: 80px;
+  --spacing-p14: 96px;
+  --spacing-p15: 112px;
+  --spacing-p16: 128px;
+  --spacing-p17: 160px;
+  --spacing-p18: 192px;
+  --spacing-p19: 224px;
+  --spacing-p20: 256px;
+  --spacing-p21: 288px;
+  --spacing-p22: 320px;
+  --spacing-p23: 384px;
+  --spacing-p24: 448px;
+  --spacing-p25: 500px;
+
+  --size-s0: 0px;
+  --size-s1: 4px;
+  --size-s2: 8px;
+  --size-s3: 12px;
+  --size-s4: 16px;
+  --size-s5: 20px;
+  --size-s6: 24px;
+  --size-s7: 28px;
+  --size-s8: 32px;
+  --size-s9: 36px;
+  --size-s10: 40px;
+  --size-s11: 44px;
+  --size-s12: 48px;
+  --size-s13: 52px;
+  --size-s14: 56px;
+  --size-s15: 60px;
+  --size-s16: 64px;
+  --size-s17: 68px;
+  --size-s18: 72px;
+  --size-s19: 76px;
+  --size-s20: 80px;
+  --size-s21: 84px;
+  --size-s22: 88px;
+  --size-s23: 92px;
+  --size-s24: 96px;
+  --size-s25: 100px;
+  --size-s26: 104px;
+  --size-s27: 108px;
+  --size-s28: 112px;
+  --size-s29: 116px;
+  --size-s30: 120px;
+  --size-s31: 124px;
+  --size-s32: 128px;
+  --size-s33: 132px;
+  --size-s34: 136px;
+  --size-s35: 140px;
+  --size-s36: 144px;
+  --size-s37: 148px;
+  --size-s38: 152px;
+  --size-s39: 156px;
+  --size-s40: 160px;
+  --size-s41: 164px;
+  --size-s42: 168px;
+  --size-s43: 172px;
+  --size-s44: 176px;
+  --size-s45: 180px;
+  --size-s46: 184px;
+  --size-s47: 188px;
+  --size-s48: 192px;
+  --size-s49: 196px;
+  --size-s50: 200px;
+  --size-s51: 204px;
+  --size-s52: 208px;
+  --size-s53: 212px;
+  --size-s54: 216px;
+  --size-s55: 220px;
+  --size-s56: 224px;
+  --size-s57: 228px;
+  --size-s58: 232px;
+  --size-s59: 236px;
+  --size-s60: 240px;
+  --size-s61: 244px;
+  --size-s62: 248px;
+  --size-s63: 252px;
+  --size-s64: 256px;
+  --size-s65: 260px;
+  --size-s66: 264px;
+  --size-s67: 268px;
+  --size-s68: 272px;
+  --size-s69: 276px;
+  --size-s70: 280px;
+  --size-s71: 284px;
+  --size-s72: 288px;
+  --size-s73: 292px;
+  --size-s74: 296px;
+  --size-s75: 300px;
+  --size-s76: 304px;
+  --size-s77: 308px;
+  --size-s78: 312px;
+  --size-s79: 316px;
+  --size-s80: 320px;
+  --size-s81: 324px;
+  --size-s82: 328px;
+  --size-s83: 332px;
+  --size-s84: 336px;
+  --size-s85: 340px;
+  --size-s86: 344px;
+  --size-s87: 348px;
+  --size-s88: 352px;
+  --size-s89: 356px;
+  --size-s90: 360px;
+  --size-s91: 364px;
+  --size-s92: 368px;
+  --size-s93: 372px;
+  --size-s94: 376px;
+  --size-s95: 380px;
+  --size-s96: 384px;
+  --size-s97: 388px;
+  --size-s98: 392px;
+  --size-s99: 396px;
+  --size-s100: 400px;
+  --size-s101: 404px;
+  --size-s102: 408px;
+  --size-s103: 412px;
+  --size-s104: 416px;
+  --size-s105: 420px;
+  --size-s106: 424px;
+  --size-s107: 428px;
+  --size-s108: 432px;
+  --size-s109: 436px;
+  --size-s110: 440px;
+  --size-s111: 444px;
+  --size-s112: 448px;
+  --size-s113: 452px;
+  --size-s114: 456px;
+  --size-s115: 460px;
+  --size-s116: 464px;
+  --size-s117: 468px;
+  --size-s118: 472px;
+  --size-s119: 476px;
+  --size-s120: 480px;
+  --size-s121: 484px;
+  --size-s122: 488px;
+  --size-s123: 492px;
+  --size-s124: 496px;
+  --size-s125: 500px;
+
+  --border-ss1: 1px;
+  --border-ss2: 2px;
+  --border-ss3: 3px;
+  --border-ss4: 4px;
+  --border-ss5: 5px;
+  --border-ss6: 6px;
+  --border-ss7: 7px;
+  --border-ss8: 8px;
+  --border-ss9: 9px;
+  --border-ss10: 10px;
+  --border-ss11: 11px;
+  --border-ss12: 12px;
+  --border-ss13: 13px;
+  --border-ss14: 14px;
+  --border-ss15: 15px;
+  --border-ss16: 16px;
+  --border-ss17: 17px;
+  --border-ss18: 18px;
+  --border-ss19: 19px;
+  --border-ss20: 20px;
+
+  --radius-r0: 0px;
+  --radius-r0-5: 2px;
+  --radius-r1: 4px;
+  --radius-r2: 8px;
+  --radius-r3: 12px;
+  --radius-r4: 16px;
+  --radius-r5: 20px;
+  --radius-r6: 24px;
+  --radius-r7: 28px;
+  --radius-r8: 32px;
+  --radius-r9: 36px;
+  --radius-r10: 40px;
+  --radius-r11: 44px;
+  --radius-r12: 48px;
+  --radius-r13: 52px;
+  --radius-r14: 56px;
+  --radius-r15: 60px;
+  --radius-r16: 64px;
+  --radius-r17: 68px;
+  --radius-r18: 72px;
+  --radius-r19: 76px;
+  --radius-r20: 80px;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.4);
+}
+
+/* Hide scrollbar buttons (arrows) */
+::-webkit-scrollbar-button {
+  display: none;
+}
+
+/* Firefox support */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+}
+
+/* Animation Défilement Infini (Marquee) */
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 60s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
