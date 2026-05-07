@@ -24,7 +24,10 @@ const AuthSplitScreenLayout = ({ title, subtitle, showOperator=false, children }
               </div>
           </div>
           <div className="relative flex items-center justify-center">
-              <Link to="/login/as-operator" className="absolute top-4 right-4 text-[12px] text-cocoa-40 hover:text-cocoa hover:underline">Êtes-vous un opérateur?</Link>
+              {
+                  showOperator &&  
+                  <Link to="/login/as-operator" className="absolute top-4 right-4 text-[12px] text-cocoa-40 hover:text-cocoa hover:underline">Êtes-vous un opérateur?</Link>
+              }
               <div className="w-[328px] flex flex-col gap-[148px] pb-[64px]">
                   <div className="text-[28px] text-black leading-[34px] font-medium">Tracao</div>
                   <div className="">{children}</div>
