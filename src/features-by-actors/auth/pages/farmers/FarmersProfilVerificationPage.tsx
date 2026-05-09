@@ -31,7 +31,7 @@ const FarmersProfilVerificationPage = () => {
           </div>
         </div>
         <div className="w-full flex items-center justify-end">
-          <Button onClick={() => submitProfilVerification()} className="px-3" endIcon={<RightArrowIcon className="fill-white" />}>Créer votre compte</Button>
+          <Button onClick={() => submitProfilVerification()} className="px-3 flex-0 text-nowrap" endIcon={<RightArrowIcon className="fill-white" />}>Créer votre compte</Button>
         </div>
       </div>
     </AccountCreationStepLayout>

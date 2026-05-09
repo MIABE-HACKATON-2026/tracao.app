@@ -26,7 +26,7 @@ const StoresPersonalInfoPage = () => {
                   <Input variant="location" placeholder="Choisir la situation géographique " />
               </div>
               <div className="w-full flex items-center justify-end">
-                  <Button onClick={() => submitPersonalInfo()} className="px-3 w-38.5!" endIcon={<RightArrowIcon className="fill-white" />}>Continuer</Button>
+                  <Button onClick={() => submitPersonalInfo()} className="px-3 flex-0 text-nowrap" endIcon={<RightArrowIcon className="fill-white" />}>Continuer</Button>
               </div>
           </div>
       </AccountCreationStepLayout>
