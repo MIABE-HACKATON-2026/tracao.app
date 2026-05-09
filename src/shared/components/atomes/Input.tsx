@@ -32,9 +32,11 @@ interface SelectOption {
 export interface LocationValue {
     city: string;
     country: string;
+    district?: string;
     address?: string;
-    lat?: number;
-    lng?: number;
+    latitude?: number;
+    longitude?: number;
+    zoomLevel?: number;
 }
 
 interface InputProps
@@ -46,6 +48,8 @@ interface InputProps
     onLocationChange?: (
         value: LocationValue
     ) => void;
+
+    onSelectChange?: (value: string) => void;
 
     onOtpChange?: (
         value: string
@@ -59,6 +63,7 @@ const Input = ({
     options = [],
     placeholder,
     onLocationChange,
+    onSelectChange,
     onOtpChange,
     ...props
 }: InputProps) => {
@@ -172,6 +177,15 @@ const Input = ({
     return (
         <>
             <div className="flex flex-col gap-2 w-full relative">
+                {label && (
+                    <label className="text-[14px] text-cocoa-80 font-medium flex items-center gap-1">
+                        {label}
+                        {props.required && <span className="w-1.5 h-1.5 rounded-full bg-red shadow-sm"></span>}
+                    </label>
+                )}
+                {!label && props.required && (
+                    <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-red border-1 border-white z-10"></span>
+                )}
                 {variant === "select" ? (
                     <div
                         ref={selectRef}
@@ -206,6 +220,9 @@ const Input = ({
                                             setSelectedOption(
                                                 option
                                             );
+                                            if (onSelectChange) {
+                                                onSelectChange(option.value);
+                                            }
 
                                             setIsOpen(false);
                                         }}

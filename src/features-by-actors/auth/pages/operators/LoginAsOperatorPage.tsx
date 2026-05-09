@@ -29,7 +29,7 @@ const LoginAsOperatorPage = () => {
                         <div onClick={() => handleEmailOptionSelection(true)} className={["rounded-[4px] flex items-center justify-center cursor-pointer text-[14px] leading-[20px] duration-100", chooseEmailOption ? " bg-cocoa-10 text-cocoa-80" : " bg-transparent text-cocoa-40 hover:bg-cocoa-5"].join(" ")}>Email</div>
                         <div onClick={() => handleEmailOptionSelection(false)} className={["rounded-[4px] flex items-center justify-center cursor-pointer text-[14px] leading-[20px] duration-100", !chooseEmailOption ? " bg-cocoa-10 text-cocoa-80" : " bg-transparent text-cocoa-40 hover:bg-cocoa-5"].join(" ")}>Téléphone</div>
                     </div>
-                    {chooseEmailOption ? <Input variant="email" placeholder="Entrer votre email opérateur" /> : <Input variant="text" placeholder="Saississez votre numéro" />}
+                    {chooseEmailOption ? <Input required variant="email" placeholder="Entrer votre email opérateur" /> : <Input required variant="text" placeholder="Saississez votre numéro" />}
                 </div>
 
                 <div className="w-full flex flex-col items-center justify-start gap-4">

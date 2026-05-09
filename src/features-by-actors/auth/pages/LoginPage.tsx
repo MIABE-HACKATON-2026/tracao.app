@@ -13,8 +13,8 @@ const LoginPage = () => {
                     <div className="text-cocoa-70">Vous n’avez pas de compte? <Link to="/register" className="!text-black underline">Créez-en</Link> un gratuitement.</div>
                 </div>
                 <div className="w-full flex flex-col gap-5">
-                    <Input variant="email" placeholder="example@gmail.com" />
-                    <Input variant="password" placeholder="Entrer votre mot de passe" />
+                    <Input required variant="email" placeholder="example@gmail.com" />
+                    <Input required variant="password" placeholder="Entrer votre mot de passe" />
                 </div>
 
                 <div className="w-full flex flex-col items-center justify-start gap-4">

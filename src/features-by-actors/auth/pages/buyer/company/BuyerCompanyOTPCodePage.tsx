@@ -15,7 +15,7 @@ const BuyerCompanyOTPCodePage = () => {
                   <div className="text-[24px] leading-[28px] text-cocoa"><span className="text-cocoa-40">Entrer le</span> code OTP</div>
               </div>
               <div className="flex flex-col gap-5 w-full">
-                  <Input variant="text" placeholder="Code OTP" />
+                  <Input required variant="otp" placeholder="Code OTP" />
               </div>
               <div className="w-full flex items-center justify-end">
                   <Button onClick={() => submitOtp()} className="px-3 flex-0 text-nowrap" endIcon={<RightArrowIcon className="fill-white" />}>Terminer</Button>

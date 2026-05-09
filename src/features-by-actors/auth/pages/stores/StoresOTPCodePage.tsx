@@ -21,7 +21,7 @@ const StoresOTPCodePage = () => {
         <div className="flex flex-col gap-5 w-full">
           <div className="flex flex-col gap-2 items-start">
             <div className="text-[14px] leading-[20px] text-cocoa-40">Code OTP</div>
-            <Input variant="otp" placeholder="0" />
+            <Input required variant="otp" placeholder="0" />
           </div>
         </div>
         <div className="w-full flex items-center justify-end">

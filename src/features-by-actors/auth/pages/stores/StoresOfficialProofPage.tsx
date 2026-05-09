@@ -1,49 +1,44 @@
 import { useState } from "react"
 import { useNavigate } from "react-router"
-import AccountCreationStepLayout from "../../../layouts/AccountCreationStepLayout"
-import Input from "../../../../../shared/components/atomes/Input"
-import Button from "../../../../../shared/components/atomes/Button"
-import { RightArrowIcon } from "../../../../../shared/components/icons"
-import { useAuth } from "../../../stores/auth.store"
+import AccountCreationStepLayout from "../../layouts/AccountCreationStepLayout"
+import Input from "../../../../shared/components/atomes/Input"
+import Button from "../../../../shared/components/atomes/Button"
+import { RightArrowIcon } from "../../../../shared/components/icons"
+import { useAuth } from "../../stores/auth.store"
 
-const BuyerCompanyOfficialProofPage = () => {
+const StoresOfficialProofPage = () => {
     const navigate = useNavigate()
-    const { user, updateBuyerProfile } = useAuth();
+    const { updateBuyerProfile } = useAuth();
 
-    // Déterminer s'il est importateur ou exportateur
-    const isImporter = user.sub_role === 'importateur';
-
+    const [storeName, setStoreName] = useState("");
     const [licenseFile, setLicenseFile] = useState<File | null>(null);
     const [error, setError] = useState<string | null>(null);
 
     const submitProof = () => {
-        if (!licenseFile) {
-            setError("Veuillez fournir un document officiel.");
+        if (!storeName.trim() || !licenseFile) {
+            setError("Veuillez remplir tous les champs et fournir un document officiel.");
             return;
         }
-
-        // Sauvegarder la licence dans le profil acheteur en fonction du sous-rôle
-        if (isImporter) {
-            updateBuyerProfile({ import_license: licenseFile ? licenseFile.name : undefined }); // Ex. juste le nom ou simuler un path
-        } else {
-            updateBuyerProfile({ export_license: licenseFile ? licenseFile.name : undefined });
-        }
-
-        navigate("/buyers/company/connection-info")
+        updateBuyerProfile({
+            company_name: storeName,
+            import_license: licenseFile.name
+        });
+        navigate("/stores/connection-infos")
     }
 
     return (
-        <AccountCreationStepLayout actorType='buyer/company' step="officialProof">
+        <AccountCreationStepLayout actorType='store' step="officialProof">
             <div className="max-w-[320px] w-full flex flex-col items-start gap-8">
                 <div className="flex flex-col items-start gap-1 max-w-[283px]">
                     <div className="text-[24px] leading-[28px] text-cocoa"><span className="text-cocoa-40">Fournir une</span> preuve officielle</div>
                     {error && <div className="text-red text-[12px]">{error}</div>}
                 </div>
                 <div className="flex flex-col gap-5 w-full">
+                    <Input required variant="text" placeholder="Nom du magasin" value={storeName} onChange={(e) => setStoreName(e.target.value)} />
                     <Input
                         required
                         variant="file"
-                        placeholder={isImporter ? "Licence d'importation" : "Licence d'exportation"}
+                        placeholder="Document légal"
                         onChange={(e) => {
                             if (e.target.files && e.target.files.length > 0) {
                                 setLicenseFile(e.target.files[0]);
@@ -58,4 +53,4 @@ const BuyerCompanyOfficialProofPage = () => {
         </AccountCreationStepLayout>
     )
 }
-export default BuyerCompanyOfficialProofPage
+export default StoresOfficialProofPage

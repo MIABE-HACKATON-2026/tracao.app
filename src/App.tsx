@@ -7,8 +7,8 @@ import FarmersPersonalInfosPage from "./features-by-actors/auth/pages/farmers/Fa
 import FarmersContactInfosPage from "./features-by-actors/auth/pages/farmers/FarmersContactInfosPage"
 import FarmersProfilVerificationPage from "./features-by-actors/auth/pages/farmers/FarmersProfilVerificationPage"
 import FarmersOTPCodePage from "./features-by-actors/auth/pages/farmers/FarmersOTPCodePage"
-import StoresPersonalInfoPage from "./features-by-actors/auth/pages/stores/StoresPersonalInfoPage"
-import StoresOfficalProofPage from "./features-by-actors/auth/pages/stores/StoresOfficalProofPage"
+import StoresPersonalInfosPage from "./features-by-actors/auth/pages/stores/StoresPersonalInfosPage"
+import StoresOfficialProofPage from "./features-by-actors/auth/pages/stores/StoresOfficialProofPage"
 import StoresConnectionInfoPage from "./features-by-actors/auth/pages/stores/StoresConnectionInfoPage"
 import StoresOTPCodePage from "./features-by-actors/auth/pages/stores/StoresOTPCodePage"
 import BuyerIndividualPersonalInfosPage from "./features-by-actors/auth/pages/buyer/individual/BuyerIndividualPersonalInfosPage"
@@ -25,6 +25,9 @@ import BuyerInstitutionContactInfosPage from "./features-by-actors/auth/pages/bu
 import BuyerInstitutionOfficialProofPage from "./features-by-actors/auth/pages/buyer/institution/BuyerInstitutionOfficialProofPage"
 import BuyerInstitutionConnectionInfoPage from "./features-by-actors/auth/pages/buyer/institution/BuyerInstitutionConnectionInfoPage"
 import BuyerInstitutionOTPCodePage from "./features-by-actors/auth/pages/buyer/institution/BuyerInstitutionOTPCodePage"
+import ForgotPasswordPage from "./features-by-actors/auth/pages/password-recovery/ForgotPasswordPage"
+import ResetPasswordPage from "./features-by-actors/auth/pages/password-recovery/ResetPasswordPage"
+import PasswordResetSuccessPage from "./features-by-actors/auth/pages/password-recovery/PasswordResetSuccessPage"
 
 function App() {
 
@@ -40,6 +43,12 @@ function App() {
           <Route path="as-operator/password" element={<LoginAsOperatorPasswordPage />}></Route>
         </Route>
 
+        <Route path="reset-password">
+          <Route index element={<ForgotPasswordPage />}></Route>
+          <Route path="form" element={<ResetPasswordPage />}></Route>
+          <Route path="success" element={<PasswordResetSuccessPage />}></Route>
+        </Route>
+
         <Route path="farmers">
           <Route index element={<Navigate to="/farmers/personals-info" replace />} />
           <Route path="personals-info" element={<FarmersPersonalInfosPage />}></Route>
@@ -50,8 +59,8 @@ function App() {
 
         <Route path="stores">
           <Route index element={<Navigate to="/stores/personals-info" replace />} />
-          <Route path="personals-info" element={<StoresPersonalInfoPage />}></Route>
-          <Route path="official-proof" element={<StoresOfficalProofPage />}></Route>
+          <Route path="personals-info" element={<StoresPersonalInfosPage />}></Route>
+          <Route path="official-proof" element={<StoresOfficialProofPage />}></Route>
           <Route path="connection-infos" element={<StoresConnectionInfoPage />}></Route>
           <Route path="otp-code" element={<StoresOTPCodePage />}></Route>
         </Route>

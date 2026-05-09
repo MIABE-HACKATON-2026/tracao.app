@@ -4,11 +4,13 @@ import { CheckIcon } from "../../../shared/components/icons";
 import Button from "../../../shared/components/atomes/Button";
 import { Link, useNavigate } from "react-router";
 import BuyerCategoryModal from "../components/modals/BuyerCategoryModal";
-import { accountChoice } from "../contants/account-choice";
+import { accountChoice } from "../constants/account-choice";
 import BuyerTypeModal from "../components/modals/BuyerTypeModal";
+import { useAuth } from "../stores/auth.store";
 
 const ChoiceAccountType = () => {
     const navigate = useNavigate()
+    const { setRole, buyerProfile } = useAuth();
     const [accounts, setAccounts] = useState(accountChoice);
     const [selectedAccountId, setSelectedAccountId] = useState(1);
     const [isShowModal, setIsShowModal] = useState(false)
@@ -17,9 +19,10 @@ const ChoiceAccountType = () => {
         const updatedAccounts = accounts.map((account) => {
             setSelectedAccountId(index)
             return ({
-            ...account,
-            isSelected: account.id === index,
-        })});
+                ...account,
+                isSelected: account.id === index,
+            })
+        });
 
         setAccounts(updatedAccounts);
     };
@@ -27,11 +30,14 @@ const ChoiceAccountType = () => {
     const continueSignup = () => {
 
         if (selectedAccountId === 1) {
+            setRole('farmer');
             setIsShowModal(false)
             navigate("/farmers/personals-info")
         } else if (selectedAccountId === 2) {
+            setRole('buyer');
             setIsShowModal(true)
         } else if (selectedAccountId === 3) {
+            setRole('store');
             setIsShowModal(false)
             navigate("/stores/personals-info")
         }
@@ -45,10 +51,26 @@ const ChoiceAccountType = () => {
         }
     }
 
+    const handleFinishBuyerSelection = (param: boolean) => {
+        if (param) {
+            setSelectBuyerType(false)
+            setIsShowModal(false)
+            if (buyerProfile.buyer_type === 'individual') {
+                navigate("/buyers/individual/personals-info")
+            } else if (buyerProfile.buyer_type === 'company') {
+                navigate("/buyers/company/personals-info")
+            } else if (buyerProfile.buyer_type === 'institution') {
+                navigate("/buyers/institution/personals-info")
+            } else {
+                navigate("/buyers/individual/personals-info") // fallback
+            }
+        }
+    }
+
     return (
         <div className="w-full h-screen flex flex-col items-center justify-center gap-[64px] relative">
             {isShowModal && <BuyerCategoryModal showModal={(param) => setIsShowModal(param)} continueToSubrole={(param) => selectBuyerTypeFunc(param)} />}
-            {selectBuyerType && <BuyerTypeModal showModal={(param) => setSelectBuyerType(param)} finish={(param) => selectBuyerTypeFunc(param)} />}
+            {selectBuyerType && <BuyerTypeModal showModal={(param) => setSelectBuyerType(param)} finish={(param) => handleFinishBuyerSelection(param)} />}
             <img src="./hero-pattern.svg" className="absolute inset-0 w-full h-full object-cover z-0" alt="" />
 
             <div className="flex flex-col gap-3 items-center justify-start">

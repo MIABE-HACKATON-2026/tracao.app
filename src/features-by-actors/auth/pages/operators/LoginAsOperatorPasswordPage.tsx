@@ -17,7 +17,7 @@ const LoginAsOperatorPasswordPage = () => {
                 </div>
 
                 <div className="w-full flex flex-col gap-5">
-                    <Input variant="password" placeholder="Entrer votre mot de passe" />
+                    <Input required variant="password" placeholder="Entrer votre mot de passe" />
                 </div>
 
                 <div className="w-full flex flex-col items-center justify-start gap-4">
