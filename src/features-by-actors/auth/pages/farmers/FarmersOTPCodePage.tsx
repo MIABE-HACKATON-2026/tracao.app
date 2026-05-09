@@ -25,7 +25,7 @@ const FarmersOTPCodePage = () => {
           </div>
         </div>
         <div className="w-full flex items-center justify-end">
-          <Button onClick={() => verifyOtpCode()} className="px-3" endIcon={<RightArrowIcon className="fill-white" />}>Vérifier votre compte</Button>
+          <Button onClick={() => verifyOtpCode()} className="px-3 flex-0 text-nowrap" endIcon={<RightArrowIcon className="fill-white" />}>Vérifier votre compte</Button>
         </div>
       </div>
     </AccountCreationStepLayout>

@@ -8,7 +8,7 @@ const StoresOTPCodePage = () => {
   const navigate = useNavigate()
 
   const verifyOtpCode = () => {
-    navigate("/farmers/otp-code")
+    navigate("/stores/otp-code")
   }
 
   return (

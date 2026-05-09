@@ -11,6 +11,20 @@ import StoresPersonalInfoPage from "./features-by-actors/auth/pages/stores/Store
 import StoresOfficalProofPage from "./features-by-actors/auth/pages/stores/StoresOfficalProofPage"
 import StoresConnectionInfoPage from "./features-by-actors/auth/pages/stores/StoresConnectionInfoPage"
 import StoresOTPCodePage from "./features-by-actors/auth/pages/stores/StoresOTPCodePage"
+import BuyerIndividualPersonalInfosPage from "./features-by-actors/auth/pages/buyer/individual/BuyerIndividualPersonalInfosPage"
+import BuyerIndividualContactInfosPage from "./features-by-actors/auth/pages/buyer/individual/BuyerIndividualContactInfosPage"
+import BuyerIndividualOTPCodePage from "./features-by-actors/auth/pages/buyer/individual/BuyerIndividualOTPCodePage"
+import BuyerIndividualProfilVerificationPage from "./features-by-actors/auth/pages/buyer/individual/BuyerIndividualProfilVerificationPage"
+import BuyerCompanyPersonalInfosPage from "./features-by-actors/auth/pages/buyer/company/BuyerCompanyPersonalInfosPage"
+import BuyerCompanyContactInfosPage from "./features-by-actors/auth/pages/buyer/company/BuyerCompanyContactInfosPage"
+import BuyerCompanyOfficialProofPage from "./features-by-actors/auth/pages/buyer/company/BuyerCompanyOfficialProofPage"
+import BuyerCompanyConnectionInfoPage from "./features-by-actors/auth/pages/buyer/company/BuyerCompanyConnectionInfoPage"
+import BuyerCompanyOTPCodePage from "./features-by-actors/auth/pages/buyer/company/BuyerCompanyOTPCodePage"
+import BuyerInstitutionPersonalInfosPage from "./features-by-actors/auth/pages/buyer/institution/BuyerInstitutionPersonalInfosPage"
+import BuyerInstitutionContactInfosPage from "./features-by-actors/auth/pages/buyer/institution/BuyerInstitutionContactInfosPage"
+import BuyerInstitutionOfficialProofPage from "./features-by-actors/auth/pages/buyer/institution/BuyerInstitutionOfficialProofPage"
+import BuyerInstitutionConnectionInfoPage from "./features-by-actors/auth/pages/buyer/institution/BuyerInstitutionConnectionInfoPage"
+import BuyerInstitutionOTPCodePage from "./features-by-actors/auth/pages/buyer/institution/BuyerInstitutionOTPCodePage"
 
 function App() {
 
@@ -40,6 +54,36 @@ function App() {
           <Route path="official-proof" element={<StoresOfficalProofPage />}></Route>
           <Route path="connection-infos" element={<StoresConnectionInfoPage />}></Route>
           <Route path="otp-code" element={<StoresOTPCodePage />}></Route>
+        </Route>
+
+        <Route path="buyers">
+
+          <Route path="individual">
+            <Route index element={<Navigate to="/buyers/individual/personals-info" replace />} />
+            <Route path="personals-info" element={<BuyerIndividualPersonalInfosPage />}></Route>
+            <Route path="contact-infos" element={<BuyerIndividualContactInfosPage />}></Route>
+            <Route path="profil-verification" element={<BuyerIndividualProfilVerificationPage />}></Route>
+            <Route path="otp-code" element={<BuyerIndividualOTPCodePage />}></Route>
+          </Route>
+
+          <Route path="company">
+            <Route index element={<Navigate to="/buyers/company/personals-info" replace />} />
+            <Route path="personals-info" element={<BuyerCompanyPersonalInfosPage />}></Route>
+            <Route path="contact-infos" element={<BuyerCompanyContactInfosPage />}></Route>
+            <Route path="official-proof" element={<BuyerCompanyOfficialProofPage />}></Route>
+            <Route path="connection-info" element={<BuyerCompanyConnectionInfoPage />}></Route>
+            <Route path="otp-code" element={<BuyerCompanyOTPCodePage />}></Route>
+          </Route>
+
+          <Route path="institution">
+            <Route index element={<Navigate to="/buyers/institution/personals-info" replace />} />
+            <Route path="personals-info" element={<BuyerInstitutionPersonalInfosPage />}></Route>
+            <Route path="contact-infos" element={<BuyerInstitutionContactInfosPage />}></Route>
+            <Route path="official-proof" element={<BuyerInstitutionOfficialProofPage />}></Route>
+            <Route path="connection-info" element={<BuyerInstitutionConnectionInfoPage />}></Route>
+            <Route path="otp-code" element={<BuyerInstitutionOTPCodePage />}></Route>
+          </Route>
+
         </Route>
 
         <Route path="/account-choice" element={<ChoiceAccountType />}></Route>
