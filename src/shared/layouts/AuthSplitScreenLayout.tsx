@@ -9,7 +9,9 @@ export interface IAuthSplitScreenText {
 
 type IAuthSplitScreen = IAuthSplitScreenText & {children : ReactNode}
 
-const AuthSplitScreenLayout = ({ title, subtitle, showOperator=false, children } :  IAuthSplitScreen) => {
+const AuthSplitScreenLayout = ({ title, subtitle, showOperator = false, children }: IAuthSplitScreen) => {
+    const landingURL = import.meta.env.VITE_LANDING_URL ? import.meta.env.VITE_LANDING_URL : 'http://localhost:5173'
+
   return (
     <div className="w-full h-screen grid grid-cols-[1.5fr_1fr]">
           <div className="bg-roast relative px-[124px] pt-[82px]">
@@ -29,7 +31,9 @@ const AuthSplitScreenLayout = ({ title, subtitle, showOperator=false, children }
                   <Link to="/login/as-operator" className="absolute top-4 right-4 text-[12px] text-cocoa-40 hover:text-cocoa hover:underline">Êtes-vous un opérateur?</Link>
               }
               <div className="w-[328px] flex flex-col gap-[148px] pb-[64px]">
-                  <div className="text-[28px] text-black leading-[34px] font-medium">Tracao</div>
+                  <Link to={landingURL}>
+                      <div className="text-[28px] text-black leading-[34px] font-medium">Tracao</div>
+                  </Link>
                   <div className="">{children}</div>
               </div>
           </div>
