@@ -35,6 +35,7 @@ const Button = ({
         h-11 rounded-full
         font-normal transition-all cursor-pointer
         disabled:opacity-50 disabled:cursor-not-allowed
+        text-[14px] leading-[20px]
         w-full
         ${variants[variant]}
         ${className}

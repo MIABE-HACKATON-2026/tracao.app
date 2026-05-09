@@ -6,7 +6,7 @@ import GoogleIcon from "../../../shared/components/icons/GoogleIcon"
 
 const LoginPage = () => {
     return (
-        <AuthSplitScreenLayout title="Bonjour, Bienvenue !" subtitle="Entrez vos informations pour accéder aux fonctionnalités qu’offre notre plateforme et  profitez-en!">
+        <AuthSplitScreenLayout showOperator={true} title="Bonjour, Bienvenue !" subtitle="Entrez vos informations pour accéder aux fonctionnalités qu’offre notre plateforme et  profitez-en!">
             <div className="flex flex-col items-center gap-11">
                 <div className="flex flex-col gap-2 items-start">
                     <div className="text-[28px] leading-[34px] font-medium tracking-[0%]">Ravie de vous revoir!</div>

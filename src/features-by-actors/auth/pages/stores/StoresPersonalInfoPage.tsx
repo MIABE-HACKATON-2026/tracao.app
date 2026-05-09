@@ -1,0 +1,36 @@
+import { useNavigate } from 'react-router'
+import Button from '../../../../shared/components/atomes/Button'
+import Input from '../../../../shared/components/atomes/Input'
+import { RightArrowIcon } from '../../../../shared/components/icons'
+import AccountCreationStepLayout from '../../layouts/AccountCreationStepLayout'
+
+const StoresPersonalInfoPage = () => {
+    const navigate = useNavigate()
+
+    const submitPersonalInfo = () => {
+        navigate("/stores/official-proof")
+    }
+
+  return (
+      <AccountCreationStepLayout actorType='store' step="personalInfos">
+          <div className="max-w-[320px] w-full flex flex-col items-start gap-8">
+              <div className="flex flex-col items-start gap-1">
+                  <img src="/farmers/personal.svg" className="h-[84px]" alt="" />
+                  <div className="text-[24px] leading-[28px] text-cocoa"><span className="text-cocoa-40">Entrer vos</span> informations du réprésentant du magasin</div>
+              </div>
+              <div className="flex flex-col gap-5 w-full">
+                  <div className="flex h-11 gap-5 w-full">
+                      <Input variant="text" placeholder="Nom" />
+                      <Input variant="text" placeholder="Prénom" />
+                  </div>
+                  <Input variant="location" placeholder="Choisir la situation géographique " />
+              </div>
+              <div className="w-full flex items-center justify-end">
+                  <Button onClick={() => submitPersonalInfo()} className="px-3 w-38.5!" endIcon={<RightArrowIcon className="fill-white" />}>Continuer</Button>
+              </div>
+          </div>
+      </AccountCreationStepLayout>
+  )
+}
+
+export default StoresPersonalInfoPage

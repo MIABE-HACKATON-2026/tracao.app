@@ -13,10 +13,10 @@ const AuthSplitScreenLayout = ({ title, subtitle, showOperator=false, children }
   return (
     <div className="w-full h-screen grid grid-cols-[1.5fr_1fr]">
           <div className="bg-roast relative px-[124px] pt-[82px]">
-              <img src="./images/pattern.png" className="absolute inset-0 w-full h-full object-cover z-0" alt="" />
+              <img src="/images/pattern.png" className="absolute inset-0 w-full h-full object-cover z-0" alt="" />
               <div className="w-full h-full pb-8 relative flex flex-col items-start justify-between">
                   <div className="flex flex-col gap-15 items-start">
-                      <img src="./images/logo-harvest.png" alt="" />
+                      <img src="/images/logo-harvest.png" alt="" />
                       <div className="text-[60px] leading-[76px] max-w-[520px] text-harvest font-semibold">{title}</div>
                       <div className="text-[20px] leading-[28px] max-w-[520px] text-harvest font-normal">{subtitle}</div>
                   </div>

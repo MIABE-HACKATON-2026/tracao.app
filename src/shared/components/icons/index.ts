@@ -50,3 +50,4 @@ export { default as WhatsappIcon } from "./WhatsappIcon";
 export { default as MenuIcon } from "./MenuIcon";
 export { default as CloseIcon } from "./CloseIcon";
 export { default as GlobeIcon } from "./GlobeIcon";
+export { default as DocIcon } from "./DocIcon";
