@@ -75,7 +75,7 @@ const AccountCreationStepLayout = <T extends ActorType>({ actorType, step, child
                 {actorType === "buyer/institution" && <BuyerInstitutionStepMarkers step={step as BuyerInstitutionSteps} />}
                 <div className=""></div>
             </div>
-            <div className="w-full h-full flex items-center justify-start pl-[224px]">{children}</div>
+            <div className="w-full h-full flex items-center justify-center">{children}</div>
         </div>
     )
 }
