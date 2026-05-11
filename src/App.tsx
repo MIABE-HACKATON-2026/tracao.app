@@ -1,6 +1,15 @@
-import { BrowserRouter, Navigate, Route, Routes } from "react-router"
+import { BrowserRouter, Navigate, Route, Routes, Outlet } from "react-router-dom"
 import LoginPage from "./features-by-actors/auth/pages/LoginPage"
 import ChoiceAccountType from "./features-by-actors/auth/pages/ChoiceAccountType"
+// ... imports omitted for brevity in thought, but I will provide full ones ...
+import FarmersDashboard from "./features-by-actors/farms/pages/Dashboard"
+import BuyersDashboard from "./features-by-actors/buyers/pages/Dashboard"
+import StoresDashboard from "./features-by-actors/stores/pages/Dashboard"
+import ProcessorsDashboard from "./features-by-actors/processors/pages/Dashboard"
+import TransportersDashboard from "./features-by-actors/transporters/pages/Dashboard"
+import AgentsDashboard from "./features-by-actors/agents/pages/Dashboard"
+import { AuthGuard, RoleGuard } from "./shared/middlewares/guards"
+import DashboardLayout from "./shared/layouts/DashboardLayout"
 import LoginAsOperatorPage from "./features-by-actors/auth/pages/operators/LoginAsOperatorPage"
 import LoginAsOperatorPasswordPage from "./features-by-actors/auth/pages/operators/LoginAsOperatorPasswordPage"
 import FarmersPersonalInfosPage from "./features-by-actors/auth/pages/farmers/FarmersPersonalInfosPage"
@@ -96,6 +105,37 @@ function App() {
         </Route>
 
         <Route path="/account-choice" element={<ChoiceAccountType />}></Route>
+
+        {/* Tableau de Bord Protégés */}
+        <Route element={<AuthGuard />}>
+          <Route element={<DashboardLayout children={<Outlet />} />}>
+            
+            <Route element={<RoleGuard allowedRoles={["farmer"]} />}>
+              <Route path="/farmers/dashboard" element={<FarmersDashboard />} />
+            </Route>
+
+            <Route element={<RoleGuard allowedRoles={["buyer"]} />}>
+              <Route path="/buyers/dashboard" element={<BuyersDashboard />} />
+            </Route>
+
+            <Route element={<RoleGuard allowedRoles={["store"]} />}>
+              <Route path="/stores/dashboard" element={<StoresDashboard />} />
+            </Route>
+
+            <Route element={<RoleGuard allowedRoles={["processor"]} />}>
+              <Route path="/processors/dashboard" element={<ProcessorsDashboard />} />
+            </Route>
+
+            <Route element={<RoleGuard allowedRoles={["transporter"]} />}>
+              <Route path="/transporters/dashboard" element={<TransportersDashboard />} />
+            </Route>
+
+            <Route element={<RoleGuard allowedRoles={["agent"]} />}>
+              <Route path="/agents/dashboard" element={<AgentsDashboard />} />
+            </Route>
+
+          </Route>
+        </Route>
       </Routes>
     </BrowserRouter>
   )
