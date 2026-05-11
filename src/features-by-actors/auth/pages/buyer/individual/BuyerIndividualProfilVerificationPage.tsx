@@ -2,12 +2,17 @@ import { useNavigate } from "react-router"
 import AccountCreationStepLayout from "../../../layouts/AccountCreationStepLayout"
 import Button from "../../../../../shared/components/atomes/Button"
 import { RightArrowIcon, UserIcon } from "../../../../../shared/components/icons"
+import { useAuth } from "../../../stores/auth.store"
 
 const BuyerIndividualProfilVerificationPage = () => {
     const navigate = useNavigate()
+    const { submitRegistration, isLoading, error } = useAuth();
 
-    const submitProfilVerification = () => {
-        navigate("/buyers/individual/otp-code")
+    const submitProfilVerification = async () => {
+        const success = await submitRegistration();
+        if (success) {
+            navigate("/buyers/individual/otp-code")
+        }
     }
 
   return (
@@ -16,6 +21,7 @@ const BuyerIndividualProfilVerificationPage = () => {
               <div className="flex flex-col items-start gap-1 max-w-[283px]">
                   <img src="/farmers/verification.svg" className="h-[84px]" alt="" />
                   <div className="text-[24px] leading-[28px] text-cocoa">Profil & vérification</div>
+                  {error && <div className="text-red text-[12px] mt-1">{error}</div>}
               </div>
               <div className="flex flex-col gap-5 w-full">
                   <div className="flex flex-col gap-2 items-start">
@@ -31,7 +37,9 @@ const BuyerIndividualProfilVerificationPage = () => {
                   </div>
               </div>
               <div className="w-full flex items-center justify-end">
-                  <Button onClick={() => submitProfilVerification()} className="px-3 flex-0 text-nowrap" endIcon={<RightArrowIcon className="fill-white" />}>Créer votre compte</Button>
+                  <Button disabled={isLoading} onClick={() => submitProfilVerification()} className="px-3 flex-0 text-nowrap" endIcon={<RightArrowIcon className="fill-white" />}>
+                      {isLoading ? "Création..." : "Créer votre compte"}
+                  </Button>
               </div>
           </div>
       </AccountCreationStepLayout>

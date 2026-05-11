@@ -25,7 +25,7 @@ const FarmersContactInfosPage = () => {
             setError("Les mots de passe ne correspondent pas.")
             return;
         }
-        updateUser({ email, phone, password_hash: password })
+        updateUser({ email, phone, password: password })
         navigate("/farmers/profil-verification")
     }
 

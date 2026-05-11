@@ -8,7 +8,7 @@ import { useAuth } from "../../stores/auth.store"
 
 const StoresConnectionInfoPage = () => {
     const navigate = useNavigate()
-    const { updateUser } = useAuth();
+    const { updateUser, submitRegistration, isLoading, error: authError } = useAuth();
 
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
@@ -16,7 +16,7 @@ const StoresConnectionInfoPage = () => {
     const [confirmPassword, setConfirmPassword] = useState("");
     const [error, setError] = useState<string | null>(null);
 
-    const submitConnectionInfo = () => {
+    const submitConnectionInfo = async () => {
         if (!email.trim() || !phone.trim() || !password.trim() || !confirmPassword.trim()) {
             setError("Veuillez remplir tous les champs.");
             return;
@@ -25,9 +25,14 @@ const StoresConnectionInfoPage = () => {
             setError("Les mots de passe ne correspondent pas.");
             return;
         }
+        setError(null);
 
-        updateUser({ email, phone, password_hash: password });
-        navigate("/stores/otp-code")
+        updateUser({ email, phone, password: password });
+        
+        const success = await submitRegistration();
+        if (success) {
+            navigate("/stores/otp-code")
+        }
     }
 
     return (
@@ -35,7 +40,7 @@ const StoresConnectionInfoPage = () => {
             <div className="max-w-[320px] w-full flex flex-col items-start gap-8">
                 <div className="flex flex-col items-start gap-1 max-w-[283px]">
                     <div className="text-[24px] leading-[28px] text-cocoa"><span className="text-cocoa-40">Entrer les</span> informations de connexion</div>
-                    {error && <div className="text-red text-[12px]">{error}</div>}
+                    {(error || authError) && <div className="text-red text-[12px]">{error || authError}</div>}
                 </div>
                 <div className="flex flex-col gap-5 w-full">
                     <Input required variant="email" placeholder="Email du magasin" value={email} onChange={(e) => setEmail(e.target.value)} />
@@ -44,7 +49,9 @@ const StoresConnectionInfoPage = () => {
                     <Input required variant="password" placeholder="Confirmer le mot de passe" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
                 </div>
                 <div className="w-full flex items-center justify-end">
-                    <Button onClick={() => submitConnectionInfo()} className="px-3 flex-0 text-nowrap" endIcon={<RightArrowIcon className="fill-white" />}>Continuer</Button>
+                    <Button disabled={isLoading} onClick={() => submitConnectionInfo()} className="px-3 flex-0 text-nowrap" endIcon={<RightArrowIcon className="fill-white" />}>
+                        {isLoading ? "Création..." : "Continuer"}
+                    </Button>
                 </div>
             </div>
         </AccountCreationStepLayout>

@@ -11,7 +11,7 @@ export interface User {
     last_name: string;
     email?: string | null;
     phone: string;
-    password_hash: string;
+    password?: string | null;
     profile_photo?: string | null;
     country?: string | null;
     city?: string | null;
