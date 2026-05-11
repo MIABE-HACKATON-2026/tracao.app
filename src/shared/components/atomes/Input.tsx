@@ -102,7 +102,9 @@ const Input = ({
             ? showPassword
                 ? "text"
                 : "password"
-            : "text";
+            : variant === "email"
+                ? "email"
+                : "text";
 
     useEffect(() => {
         const handleClickOutside = (
