@@ -2,242 +2,229 @@ import React, { useState, useEffect } from "react";
 import { 
     FilterIcon, 
     SearchIcon, 
-    MoreVerticalIcon, 
-    PlusIcon, 
-    UserIcon,
+    OptionIcon, 
+    AddIcon, 
     MailIcon,
     PhoneIcon,
     MapPinIcon,
-    CheckCircleIcon,
-    SlashIcon,
     TrashIcon,
-    EditIcon
+    EditIcon,
+    SlashIcon,
+    CheckCircleIcon
 } from "../../../shared/components/icons";
 import { useAdminStore } from "../stores/admin.store";
-import { cn } from "../../../shared/lib/utils";
-import { formatDate } from "../../../shared/utils/formatters";
+import { AdminCard, AdminTableHeader, AdminTableRow, AdminTableCell, AdminBadge, AdminButton, AdminFilterBtn } from "../components/AdminUI";
+import Modal from "../../../shared/components/atoms/Modal";
 import type { User } from "../types/admin.types";
+import { cn } from "../../../shared/lib/utils";
 
 const Stores: React.FC = () => {
     const { stores, fetchStores, isLoading, updateStoreStatus, deleteUser, createUser, updateUser } = useAdminStore();
     const [searchTerm, setSearchTerm] = useState("");
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isAddOpen, setIsAddOpen] = useState(false);
     const [selectedStore, setSelectedStore] = useState<User | null>(null);
     const [activePopover, setActivePopover] = useState<string | null>(null);
-    const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
-    const [storeToDelete, setStoreToDelete] = useState<string | null>(null);
+    const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+    const [storeToDelete, setStoreToDelete] = useState<User | null>(null);
 
     useEffect(() => {
         fetchStores();
-    }, []);
+    }, [fetchStores]);
 
     const filteredStores = stores.filter(s => 
         `${s.first_name} ${s.last_name}`.toLowerCase().includes(searchTerm.toLowerCase()) ||
         s.email.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    const handleOpenCreateModal = () => {
-        setSelectedStore(null);
-        setIsModalOpen(true);
-    };
-
-    const handleOpenEditModal = (store: User) => {
-        setSelectedStore(store);
-        setIsModalOpen(true);
-        setActivePopover(null);
-    };
-
-    const handleDeleteClick = (id: string) => {
-        setStoreToDelete(id);
-        setIsConfirmDeleteOpen(true);
-        setActivePopover(null);
-    };
-
-    const handleToggleStatus = async (id: string, currentActive: boolean) => {
+    const handleToggleStatus = async (store: User) => {
         try {
-            await updateStoreStatus(id, !currentActive);
+            await updateStoreStatus(store.id, !store.is_active);
             setActivePopover(null);
         } catch (error) {
             console.error("Failed to toggle status", error);
         }
     };
 
+    const handleDelete = async () => {
+        if (!storeToDelete) return;
+        try {
+            await deleteUser(storeToDelete.id);
+            setIsDeleteOpen(false);
+            setStoreToDelete(null);
+        } catch (error) {
+            console.error("Failed to delete", error);
+        }
+    };
+
     return (
-        <div className="w-full h-full flex flex-col gap-6 animate-in fade-in duration-500">
-            {/* Header section */}
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                <div className="flex flex-col gap-1">
-                    <h1 className="text-[20px] font-semibold text-cocoa tracking-tight">Gestion des Magasins</h1>
-                    <p className="text-[13px] text-cocoa-60">Gérez les coopératives et magasins de la plateforme</p>
+        <div className="w-full h-full flex flex-col gap-5 animate-in fade-in duration-500">
+            <div className="flex justify-between items-center">
+                <div className="flex flex-col items-start gap-1">
+                    <h1 className="text-[16px] leading-[16px] font-normal text-cocoa">Gestion des Magasins</h1>
+                    <p className="text-[12px] leading-[16px] text-cocoa-60">Coopératives et points de collecte</p>
                 </div>
-                
-                <div className="flex items-center gap-3 w-full md:w-auto">
-                    <div className="relative flex-1 md:w-[280px]">
-                        <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-cocoa-20" />
-                        <input 
-                            type="text" 
-                            placeholder="Rechercher un magasin..." 
-                            className="w-full h-10 pl-10 pr-4 rounded-[12px] bg-white border border-cocoa-10 text-[13px] focus:outline-none focus:ring-2 focus:ring-cocoa/5 transition-all placeholder:text-cocoa-20"
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                        />
+                <div className="flex gap-2">
+                    <div className="h-[34px] w-[34px] rounded-full bg-cocoa-5 flex items-center justify-center cursor-pointer hover:bg-cocoa-10 transition-colors">
+                        <SearchIcon className="h-[18px] w-[18px] fill-cocoa-80" />
                     </div>
-                    <button 
-                        onClick={handleOpenCreateModal}
-                        className="h-10 px-4 rounded-[12px] bg-cocoa text-white text-[13px] font-medium flex items-center gap-2 hover:bg-cocoa-90 transition-all shadow-sm active:scale-95"
-                    >
-                        <PlusIcon className="h-4 w-4" />
-                        <span>Nouveau Magasin</span>
-                    </button>
+                    <AdminButton size="sm" variant="secondary" onClick={() => setIsAddOpen(true)} className="gap-2">
+                        <AddIcon className="h-[16px] w-[16px] fill-cocoa" />
+                        <span>Ajouter</span>
+                    </AdminButton>
+                    <AdminFilterBtn onClick={() => {}} />
                 </div>
             </div>
 
-            {/* Stats Overview (Optional but premium) */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div className="bg-white p-4 rounded-[16px] border border-cocoa-5 flex flex-col gap-1 shadow-sm">
-                    <span className="text-[11px] text-cocoa-40 font-medium uppercase tracking-wider">Total Magasins</span>
-                    <span className="text-[24px] font-semibold text-cocoa">{stores.length}</span>
+                <div className="bg-white/40 p-4 rounded-[16px] border border-white/20 flex flex-col gap-1 shadow-sm">
+                    <span className="text-[11px] text-cocoa-40 font-medium">Total Magasins</span>
+                    <span className="text-[24px] font-medium text-cocoa">{stores.length}</span>
                 </div>
-                <div className="bg-white p-4 rounded-[16px] border border-cocoa-5 flex flex-col gap-1 shadow-sm">
-                    <span className="text-[11px] text-cocoa-40 font-medium uppercase tracking-wider">Actifs</span>
-                    <span className="text-[24px] font-semibold text-green-600">{stores.filter(s => s.is_active).length}</span>
+                <div className="bg-white/40 p-4 rounded-[16px] border border-white/20 flex flex-col gap-1 shadow-sm">
+                    <span className="text-[11px] text-cocoa-40 font-medium">Actifs</span>
+                    <span className="text-[24px] font-medium text-green-600">{stores.filter(s => s.is_active).length}</span>
                 </div>
-                <div className="bg-white p-4 rounded-[16px] border border-cocoa-5 flex flex-col gap-1 shadow-sm">
-                    <span className="text-[11px] text-cocoa-40 font-medium uppercase tracking-wider">Suspendus</span>
-                    <span className="text-[24px] font-semibold text-red-500">{stores.filter(s => !s.is_active).length}</span>
+                <div className="bg-white/40 p-4 rounded-[16px] border border-white/20 flex flex-col gap-1 shadow-sm">
+                    <span className="text-[11px] text-cocoa-40 font-medium">Suspendus</span>
+                    <span className="text-[24px] font-medium text-red-500">{stores.filter(s => !s.is_active).length}</span>
                 </div>
             </div>
 
-            {/* Table Section */}
-            <div className="flex-1 bg-white rounded-[20px] border border-cocoa-5 shadow-sm overflow-hidden flex flex-col">
-                <div className="overflow-x-auto">
-                    <table className="w-full text-left border-collapse">
-                        <thead>
-                            <tr className="bg-cocoa-[2%] border-b border-cocoa-5">
-                                <th className="px-6 py-4 text-[11px] font-semibold text-cocoa-40 uppercase tracking-wider">Magasin / Coopérative</th>
-                                <th className="px-6 py-4 text-[11px] font-semibold text-cocoa-40 uppercase tracking-wider">Email & Contact</th>
-                                <th className="px-6 py-4 text-[11px] font-semibold text-cocoa-40 uppercase tracking-wider">Localisation</th>
-                                <th className="px-6 py-4 text-[11px] font-semibold text-cocoa-40 uppercase tracking-wider">Statut</th>
-                                <th className="px-6 py-4 text-[11px] font-semibold text-cocoa-40 uppercase tracking-wider text-right">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody className="divide-y divide-cocoa-5">
-                            {isLoading ? (
-                                Array.from({ length: 5 }).map((_, i) => (
-                                    <tr key={i} className="animate-pulse">
-                                        <td colSpan={5} className="px-6 py-8"><div className="h-4 bg-cocoa-5 rounded w-full"></div></td>
-                                    </tr>
-                                ))
-                            ) : filteredStores.length === 0 ? (
-                                <tr>
-                                    <td colSpan={5} className="px-6 py-20 text-center">
-                                        <div className="flex flex-col items-center gap-2 text-cocoa-40">
-                                            <UserIcon className="h-10 w-10 opacity-20" />
-                                            <p className="text-[14px]">Aucun magasin trouvé</p>
+            <AdminCard>
+                <AdminTableHeader headers={["Magasin / Coopérative", "Email & Contact", "Localisation", "Statut", ""]} />
+                <div className="flex-1 overflow-y-auto flex flex-col gap-1 mt-1.5">
+                    {isLoading ? (
+                        <div className="p-10 text-center text-cocoa-40 text-[12px] animate-pulse">Chargement des magasins...</div>
+                    ) : filteredStores.length === 0 ? (
+                        <div className="p-10 text-center text-cocoa-40 text-[12px]">Aucun magasin trouvé</div>
+                    ) : (
+                        filteredStores.map((store) => (
+                            <AdminTableRow key={store.id} onClick={() => setSelectedStore(store)}>
+                                <AdminTableCell width="w-[250px]">
+                                    <div className="flex items-center gap-3">
+                                        <div className="h-8 w-8 rounded-full bg-cocoa-10 flex items-center justify-center text-cocoa font-bold text-[12px]">
+                                            {store.first_name?.[0] || "M"}
                                         </div>
-                                    </td>
-                                </tr>
-                            ) : (
-                                filteredStores.map((store) => (
-                                    <tr key={store.id} className="hover:bg-cocoa-[1%] transition-colors group">
-                                        <td className="px-6 py-4">
-                                            <div className="flex items-center gap-3">
-                                                <div className="h-10 w-10 rounded-[12px] bg-cocoa-5 flex items-center justify-center text-cocoa font-bold text-[14px]">
-                                                    {store.first_name?.[0] || "M"}
-                                                </div>
-                                                <div className="flex flex-col">
-                                                    <span className="text-[14px] font-semibold text-cocoa">{store.first_name} {store.last_name}</span>
-                                                    <span className="text-[11px] text-cocoa-40 font-medium uppercase tracking-tight">ID: {store.id.substring(0, 8)}</span>
-                                                </div>
+                                        <div className="flex flex-col">
+                                            <span className="text-[12px] font-medium text-cocoa">{store.first_name} {store.last_name}</span>
+                                            <span className="text-[10px] text-cocoa-40 uppercase">ID: {store.id.substring(0, 8)}</span>
+                                        </div>
+                                    </div>
+                                </AdminTableCell>
+                                <AdminTableCell width="w-[220px]">
+                                    <div className="flex flex-col gap-0.5">
+                                        <div className="flex items-center gap-1.5 text-[11px] text-cocoa-60">
+                                            <MailIcon className="h-3 w-3" />
+                                            <span>{store.email}</span>
+                                        </div>
+                                        <div className="flex items-center gap-1.5 text-[10px] text-cocoa-40">
+                                            <PhoneIcon className="h-3 w-3" />
+                                            <span>{store.phone || "—"}</span>
+                                        </div>
+                                    </div>
+                                </AdminTableCell>
+                                <AdminTableCell width="w-[180px]">
+                                    <div className="flex items-center gap-1.5 text-[11px] text-cocoa-60">
+                                        <MapPinIcon className="h-3.5 w-3.5 text-cocoa-20" />
+                                        <span>{store.city || "—"}</span>
+                                    </div>
+                                </AdminTableCell>
+                                <AdminTableCell width="w-[120px]">
+                                    <AdminBadge 
+                                        variant={store.is_active ? 'success' : 'error'} 
+                                        label={store.is_active ? 'Actif' : 'Bloqué'} 
+                                    />
+                                </AdminTableCell>
+                                <AdminTableCell className="flex justify-end gap-3">
+                                    <button 
+                                        onClick={(e) => { e.stopPropagation(); handleToggleStatus(store); }} 
+                                        className={`text-[10px] font-medium px-3 py-1 rounded-full border transition-colors cursor-pointer ${store.is_active ? 'border-red-200 text-red-500 hover:bg-red-50' : 'border-green-200 text-green-600 hover:bg-green-50'}`}
+                                    >
+                                        {store.is_active ? 'Désactiver' : 'Activer'}
+                                    </button>
+                                    <div className="relative">
+                                        <div 
+                                            className="h-8 w-8 rounded-full flex items-center justify-center hover:bg-cocoa-10 transition-colors cursor-pointer" 
+                                            onClick={(e) => { e.stopPropagation(); setActivePopover(activePopover === store.id ? null : store.id); }}
+                                        >
+                                            <OptionIcon className="h-4 w-4 text-cocoa-40" />
+                                        </div>
+                                        {activePopover === store.id && (
+                                            <div className="absolute right-0 top-10 w-48 bg-white rounded-[12px] shadow-lg border border-cocoa-10 py-2 z-10 overflow-hidden" onClick={(e) => e.stopPropagation()}>
+                                                <button className="w-full text-left px-4 py-2 text-[12px] text-cocoa hover:bg-cocoa-5 transition-colors flex items-center gap-2 cursor-pointer">
+                                                    <EditIcon className="h-3.5 w-3.5" />
+                                                    Modifier le magasin
+                                                </button>
+                                                <button 
+                                                    onClick={() => { setStoreToDelete(store); setIsDeleteOpen(true); setActivePopover(null); }}
+                                                    className="w-full text-left px-4 py-2 text-[12px] text-red-500 hover:bg-red-50 transition-colors flex items-center gap-2 cursor-pointer"
+                                                >
+                                                    <TrashIcon className="h-3.5 w-3.5" />
+                                                    Supprimer
+                                                </button>
                                             </div>
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <div className="flex flex-col gap-1">
-                                                <div className="flex items-center gap-2 text-[13px] text-cocoa-60">
-                                                    <MailIcon className="h-3 w-3" />
-                                                    <span>{store.email}</span>
-                                                </div>
-                                                <div className="flex items-center gap-2 text-[12px] text-cocoa-40">
-                                                    <PhoneIcon className="h-3 w-3" />
-                                                    <span>{store.phone || "N/A"}</span>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <div className="flex items-center gap-2 text-[13px] text-cocoa-60">
-                                                <MapPinIcon className="h-3.5 w-3.5 text-cocoa-20" />
-                                                <span>{store.city}, {store.country}</span>
-                                            </div>
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <div className={cn(
-                                                "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold tracking-wide uppercase",
-                                                store.is_active ? "bg-green-50 text-green-700" : "bg-red-50 text-red-700"
-                                            )}>
-                                                <span className={cn("w-1.5 h-1.5 rounded-full", store.is_active ? "bg-green-500" : "bg-red-500")}></span>
-                                                {store.is_active ? "Actif" : "Suspendu"}
-                                            </div>
-                                        </td>
-                                        <td className="px-6 py-4 text-right relative">
-                                            <button 
-                                                onClick={() => setActivePopover(activePopover === store.id ? null : store.id)}
-                                                className="h-8 w-8 rounded-full hover:bg-cocoa-5 flex items-center justify-center transition-colors ml-auto"
-                                            >
-                                                <MoreVerticalIcon className="h-4 w-4 text-cocoa-40" />
-                                            </button>
-
-                                            {activePopover === store.id && (
-                                                <>
-                                                    <div className="fixed inset-0 z-10" onClick={() => setActivePopover(null)}></div>
-                                                    <div className="absolute right-6 top-12 w-[180px] bg-white rounded-[12px] shadow-xl border border-cocoa-10 z-20 overflow-hidden py-1 animate-in fade-in zoom-in-95 duration-100">
-                                                        <button 
-                                                            onClick={() => handleOpenEditModal(store)}
-                                                            className="w-full px-4 py-2 text-left text-[13px] text-cocoa hover:bg-cocoa-5 flex items-center gap-2 transition-colors"
-                                                        >
-                                                            <EditIcon className="h-3.5 w-3.5 text-cocoa-40" />
-                                                            Modifier
-                                                        </button>
-                                                        <button 
-                                                            onClick={() => handleToggleStatus(store.id, store.is_active)}
-                                                            className={cn(
-                                                                "w-full px-4 py-2 text-left text-[13px] flex items-center gap-2 transition-colors",
-                                                                store.is_active ? "text-orange-600 hover:bg-orange-50" : "text-green-600 hover:bg-green-50"
-                                                            )}
-                                                        >
-                                                            {store.is_active ? <SlashIcon className="h-3.5 w-3.5" /> : <CheckCircleIcon className="h-3.5 w-3.5" />}
-                                                            {store.is_active ? "Suspendre" : "Réactiver"}
-                                                        </button>
-                                                        <div className="h-[1px] bg-cocoa-5 my-1"></div>
-                                                        <button 
-                                                            onClick={() => handleDeleteClick(store.id)}
-                                                            className="w-full px-4 py-2 text-left text-[13px] text-red-600 hover:bg-red-50 flex items-center gap-2 transition-colors"
-                                                        >
-                                                            <TrashIcon className="h-3.5 w-3.5" />
-                                                            Supprimer
-                                                        </button>
-                                                    </div>
-                                                </>
-                                            )}
-                                        </td>
-                                    </tr>
-                                ))
-                            )}
-                        </tbody>
-                    </table>
+                                        )}
+                                    </div>
+                                </AdminTableCell>
+                            </AdminTableRow>
+                        ))
+                    )}
                 </div>
-                
-                {/* Pagination Placeholder */}
-                <div className="p-4 bg-cocoa-[1%] border-t border-cocoa-5 flex justify-between items-center text-[12px] text-cocoa-40 font-medium">
-                    <span>Affichage de {filteredStores.length} sur {stores.length} magasins</span>
-                    <div className="flex gap-1">
-                        <button className="px-3 py-1.5 rounded-lg border border-cocoa-10 bg-white disabled:opacity-50" disabled>Précédent</button>
-                        <button className="px-3 py-1.5 rounded-lg border border-cocoa-10 bg-white disabled:opacity-50" disabled>Suivant</button>
+            </AdminCard>
+
+            <Modal isOpen={!!selectedStore} onClose={() => setSelectedStore(null)}>
+                <div className="p-8 flex flex-col gap-6 w-full max-w-[500px]">
+                    <div className="flex items-center justify-between">
+                        <h2 className="text-[20px] font-medium text-cocoa">Détails du magasin</h2>
+                        <AdminBadge variant={selectedStore?.is_active ? 'success' : 'error'} label={selectedStore?.is_active ? 'Actif' : 'Suspendu'} />
+                    </div>
+                    {selectedStore && (
+                        <div className="grid grid-cols-2 gap-3">
+                            <div className="flex flex-col gap-1 px-4 py-3 bg-cocoa-5 rounded-[12px]">
+                                <span className="text-[11px] text-cocoa-40">Nom du magasin</span>
+                                <span className="text-[13px] text-cocoa font-medium">{selectedStore.first_name} {selectedStore.last_name}</span>
+                            </div>
+                            <div className="flex flex-col gap-1 px-4 py-3 bg-cocoa-5 rounded-[12px]">
+                                <span className="text-[11px] text-cocoa-40">Email officiel</span>
+                                <span className="text-[13px] text-cocoa font-medium truncate">{selectedStore.email}</span>
+                            </div>
+                            <div className="flex flex-col gap-1 px-4 py-3 bg-cocoa-5 rounded-[12px]">
+                                <span className="text-[11px] text-cocoa-40">Téléphone</span>
+                                <span className="text-[13px] text-cocoa font-medium">{selectedStore.phone || "—"}</span>
+                            </div>
+                            <div className="flex flex-col gap-1 px-4 py-3 bg-cocoa-5 rounded-[12px]">
+                                <span className="text-[11px] text-cocoa-40">Localité</span>
+                                <span className="text-[13px] text-cocoa font-medium">{selectedStore.city || "—"}</span>
+                            </div>
+                        </div>
+                    )}
+                    <div className="flex justify-end gap-3 mt-2">
+                        <AdminButton variant="secondary" onClick={() => setSelectedStore(null)}>Fermer</AdminButton>
+                        <AdminButton 
+                            className={selectedStore?.is_active ? "bg-red-500" : "bg-green-600"}
+                            onClick={() => { if(selectedStore) handleToggleStatus(selectedStore); setSelectedStore(null); }}
+                        >
+                            {selectedStore?.is_active ? 'Suspendre' : 'Activer'}
+                        </AdminButton>
                     </div>
                 </div>
-            </div>
+            </Modal>
 
-            {/* Modal & Delete Confirmation would go here (similar to Users.tsx) */}
-            {/* For brevity, I'll focus on the main UI first and add modals if needed */}
+            <Modal isOpen={isDeleteOpen} onClose={() => setIsDeleteOpen(false)}>
+                <div className="p-8 flex flex-col gap-6 w-full max-w-[400px] text-center">
+                    <div className="h-16 w-16 bg-red-50 rounded-full flex items-center justify-center mx-auto">
+                        <TrashIcon className="h-8 w-8 text-red-500" />
+                    </div>
+                    <div className="flex flex-col gap-2">
+                        <h2 className="text-[18px] font-medium text-cocoa">Confirmer la suppression</h2>
+                        <p className="text-[13px] text-cocoa-40 px-4">Êtes-vous sûr de vouloir supprimer définitivement le magasin <span className="font-semibold text-cocoa">{storeToDelete?.first_name}</span> ?</p>
+                    </div>
+                    <div className="flex flex-col gap-3">
+                        <AdminButton className="w-full bg-red-500 hover:bg-red-600" onClick={handleDelete}>Confirmer</AdminButton>
+                        <AdminButton variant="secondary" className="w-full" onClick={() => setIsDeleteOpen(false)}>Annuler</AdminButton>
+                    </div>
+                </div>
+            </Modal>
         </div>
     );
 };
