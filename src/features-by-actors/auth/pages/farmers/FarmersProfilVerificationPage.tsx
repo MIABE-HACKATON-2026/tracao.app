@@ -24,7 +24,6 @@ const FarmersProfilVerificationPage = () => {
     const file = e.target.files?.[0] || null
     setLocalFiles(prev => ({ ...prev, [key]: file }));
 
-    // Store in AuthStore for later upload (OTP step)
     if (key === 'profile') setFile('profilePhoto', file);
     else if (key === 'front') setFile('cniFront', file);
     else if (key === 'back') setFile('cniBack', file);

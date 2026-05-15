@@ -1,5 +1,5 @@
-export type UserRole = 'farmer' | 'buyer' | 'store' | 'admin';
-export type UserSubRole = 'exportateur' | 'importateur' | 'transformateur';
+export type UserRole = 'farmer' | 'buyer' | 'store' | 'admin' | 'agent' | 'transporter' | 'processor';
+export type UserSubRole = 'exportateur' | 'importateur' | 'transformateur' | 'inspector'| 'gouvernement'| 'certificateur'| 'agent' | 'transporter' | 'processor';
 export type UserStatus = 'active' | 'suspended' | 'pending';
 export type KycStatus = 'pending' | 'approved' | 'rejected';
 

@@ -7,6 +7,7 @@ export interface Batch {
     estimated_quantity: number;
     status: 'draft' | 'pending' | 'approved' | 'rejected' | 'locked' | 'closed';
     unique_code: string;
+    farmer_name?: string;
     validated_by?: string | null;
     created_at: string;
     updated_at: string;

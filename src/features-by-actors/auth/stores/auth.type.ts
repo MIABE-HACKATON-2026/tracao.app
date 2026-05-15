@@ -10,6 +10,9 @@ export interface AuthState {
 
     // Temporary file storage for registration flow
     files: {
+        kyc_back?: any;
+        kyc_front?: any;
+        profile?: File;
         profilePhoto?: File | null;
         cniFront?: File | null;
         cniBack?: File | null;

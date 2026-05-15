@@ -7,18 +7,23 @@ import GoogleIcon from "../../../shared/components/icons/GoogleIcon"
 import { useSession } from "../stores/session.store"
 
 /** Redirige l'utilisateur vers son espace en fonction de son rôle */
-const getRoleDashboard = (role: string): string => {
+const getRoleDashboard = (role: string, sub_role?: string | null): string => {
+    if (role === 'agent' && sub_role === 'inspector') return '/agents/dashboard'
+    
+    if (role === 'admin') {
+        if (sub_role === 'gouvernement') return '/gov/dashboard'
+        if (sub_role === 'certificateur') return '/cert/dashboard'
+        return '/admin/dashboard'
+    }
+
     switch (role) {
-        case "farmer":
-            return "/farmers/dashboard"
-        case "store":
-            return "/stores/dashboard"
-        case "buyer":
-            return "/buyers/dashboard"
-        case "admin":
-            return "/admin/dashboard"
-        default:
-            return "/"
+        case "farmer":      return "/farmers/dashboard"
+        case "store":       return "/stores/dashboard"
+        case "buyer":       return "/buyers/dashboard"
+        case "agent":       return "/agents/dashboard"
+        case "transporter": return "/transporters/dashboard"
+        case "processor":   return "/processors/dashboard"
+        default:            return "/"
     }
 }
 
@@ -33,7 +38,7 @@ const LoginPage = () => {
     // Si déjà connecté, rediriger directement
     useEffect(() => {
         if (isAuthenticated && user) {
-            navigate(getRoleDashboard(user.role), { replace: true })
+            navigate(getRoleDashboard(user.role, user.sub_role), { replace: true })
         }
     }, [isAuthenticated, user, navigate])
 
@@ -57,8 +62,12 @@ const LoginPage = () => {
 
         const success = await login(email.trim(), password)
 
-        if (success && user) {
-            navigate(getRoleDashboard(user.role), { replace: true })
+        if (success) {
+            // Lire l'état frais du store après la mise à jour async
+            const currentUser = useSession.getState().user
+            if (currentUser) {
+                navigate(getRoleDashboard(currentUser.role, currentUser.sub_role), { replace: true })
+            }
         }
     }
 

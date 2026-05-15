@@ -9,9 +9,9 @@ import { useSession } from "./session.store";
 const formatApiError = (error: any): string => {
     const data = error.response?.data;
     if (!data) return "Une erreur inattendue est survenue.";
-    
+
     if (typeof data === 'string') return data;
-    
+
     if (typeof data === 'object') {
         // Extraire les messages de validation (DRF renvoie souvent un objet avec les noms des champs)
         return Object.entries(data)
@@ -22,7 +22,7 @@ const formatApiError = (error: any): string => {
             })
             .join(' | ');
     }
-    
+
     return error.message || "Erreur de connexion au serveur.";
 };
 
@@ -135,7 +135,7 @@ export const useAuth = create<AuthState>()(
             verifyOTP: async (code: string) => {
                 set({ isLoading: true, error: null });
                 try {
-                    const { user } = get();
+                    const { user, files, uploadProfilePhoto, uploadKYC, uploadLicense, uploadStoreDocument } = get();
                     if (!user.email) throw new Error("Email non trouvé");
 
                     const response = await AuthService.verifyOtp(user.email, code);
@@ -144,7 +144,30 @@ export const useAuth = create<AuthState>()(
                     const { setSession } = useSession.getState();
                     setSession(response.user, response.access, response.refresh);
 
-                    set({ isLoading: false });
+                    // Maintenant qu'on est loggé, on tente d'uploader les fichiers stockés
+                    console.log("OTP verified, starting file uploads...", files);
+
+                    if (files.profile) {
+                        console.log("Uploading profile photo...");
+                        await uploadProfilePhoto(files.profile);
+                    }
+
+                    if (files.kyc_front && files.kyc_back) {
+                        console.log("Uploading KYC documents...");
+                        await uploadKYC(files.kyc_front, files.kyc_back);
+                    }
+
+                    if (files.license) {
+                        console.log("Uploading license...");
+                        const licenseType = user.sub_role === 'importateur' ? 'import' : 'export';
+                        await uploadLicense(files.license, licenseType as any);
+                    }
+
+                    // Pour le store, il nous faut un storeId. 
+                    // Si l'utilisateur est un store, peut être que le backend a créé un store par défaut ?
+                    // Ou alors le storeId est dans le profil user. Note: à affiner selon le backend.
+
+                    set({ isLoading: false, files: {} }); // Clear files after upload
                     return true;
                 } catch (error: any) {
                     set({
@@ -173,7 +196,7 @@ export const useAuth = create<AuthState>()(
                 }
             },
 
-            reset: () => set({ user: {}, buyerProfile: {}, isLoading: false, error: null }),
+            reset: () => set({ user: {}, buyerProfile: {}, isLoading: false, error: null, files: {} }),
         }),
         {
             name: "tracao-registration-flow",

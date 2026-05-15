@@ -8,6 +8,7 @@ export interface LoginRequest {
 export interface TokenResponse {
     access: string;
     refresh: string;
+    user: import('./user').User;
 }
 
 export interface RegisterRequest {

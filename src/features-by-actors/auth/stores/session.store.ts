@@ -31,16 +31,10 @@ export const useSession = create<SessionState>()(
             login: async (email, password) => {
                 set({ isLoading: true, error: null });
                 try {
-                    // 1. Obtenir les tokens JWT
-                    const { access, refresh } = await AuthService.login({ email, password });
+                    // Le backend retourne { access, refresh, user } en une seule réponse
+                    const response = await AuthService.login({ email, password });
+                    const { access, refresh, user } = response;
 
-                    // 2. Stocker les tokens pour que l'intercepteur Axios les utilise
-                    set({ accessToken: access, refreshToken: refresh });
-
-                    // 3. Récupérer le profil complet de l'utilisateur
-                    const user = await AuthService.getProfile();
-
-                    // 4. Sauvegarder la session complète
                     set({
                         user,
                         accessToken: access,
@@ -52,9 +46,12 @@ export const useSession = create<SessionState>()(
 
                     return true;
                 } catch (err: any) {
+                    const data = err?.response?.data;
                     const message =
-                        err?.response?.data?.detail ||
-                        err?.response?.data?.message ||
+                        data?.non_field_errors?.[0] ||
+                        data?.detail ||
+                        data?.message ||
+                        data?.error ||
                         'Identifiants incorrects. Veuillez réessayer.';
                     set({ isLoading: false, error: message, isAuthenticated: false });
                     return false;

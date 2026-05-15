@@ -1,20 +1,17 @@
-export type BuyerType = 'individual' | 'company' | 'institution';
-
 export interface BuyerProfile {
     id: string;
     user_id: string;
-    buyer_type: BuyerType;
-    company_name?: string | null;
-    registration_number?: string | null;
-    tax_id?: string | null;
-    business_address?: string | null;
-    country_of_operation?: string | null;
-    import_license?: string | null;
+    buyer_type?: 'individual' | 'company' | 'institution';
+    company_name?: string;
+    registration_number?: string;
+    tax_id?: string;
     export_license?: string | null;
-    certification?: string | null;
-    contact_person_name?: string | null;
-    contact_person_phone?: string | null;
-    website?: string | null;
-    verified: boolean;
+    import_license?: string | null;
+    country_of_operation?: string;
+    business_address?: string;
+    certification?: string;
     created_at: string;
+    updated_at: string;
 }
+
+export type BuyerType = 'individual' | 'company' | 'institution';

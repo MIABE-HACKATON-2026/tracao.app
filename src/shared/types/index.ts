@@ -6,6 +6,10 @@ export interface Transaction {
     quantity: number;
     price: number;
     status: 'pending' | 'completed' | 'cancelled';
+    seller_name?: string;
+    buyer_name?: string;
+    batch_code?: string;
+    crop_type?: string;
     created_at: string;
     updated_at: string;
 }
@@ -24,6 +28,9 @@ export interface TraceabilityLog {
     id: string;
     batch_id: string;
     action_type: 'create' | 'validate' | 'reject' | 'harvest' | 'transport' | 'transform' | 'sell' | 'fraud_alert' | 'field_activity';
+    action?: string;
+    user_name?: string;
+    batch_code?: string;
     performed_by: string;
     metadata?: any | null; // JSON metadata
     created_at: string;
@@ -51,6 +58,7 @@ export interface BlockchainRecord {
 export interface FraudAlert {
     id: string;
     user_id: string;
+    user_name?: string;
     batch_id?: string | null;
     parcel_id?: string | null;
     type: 'gps_conflict' | 'duplicate' | 'anomaly' | 'multi_account' | 'production_excess' | 'transport_anomaly' | 'transformation_anomaly';
@@ -70,4 +78,41 @@ export interface Notification {
     read: boolean;
     deleted: boolean;
     created_at: string;
+}
+
+export interface Transformation {
+    id: string;
+    created_by: string;
+    transformer_id: string;
+    status: 'draft' | 'pending' | 'locked' | 'completed';
+    created_at: string;
+    updated_at: string;
+    inputs?: TransformationInput[];
+    outputs?: TransformationOutput[];
+}
+
+export interface TransformationInput {
+    id: string;
+    transformation_id: string;
+    batch_id: string;
+    added_at: string;
+    batch?: {
+        id: string;
+        unique_code: string;
+        crop_type: string;
+        estimated_quantity: number;
+    };
+}
+
+export interface TransformationOutput {
+    id: string;
+    transformation_id: string;
+    batch_id: string;
+    created_at: string;
+    batch?: {
+        id: string;
+        unique_code: string;
+        crop_type: string;
+        estimated_quantity: number;
+    };
 }

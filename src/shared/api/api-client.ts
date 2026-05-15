@@ -1,19 +1,28 @@
 import type { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { axiosInstance } from './axios';
 
-/**
- * Interface globale pour standardiser les retours de l'API.
- * Optionnel selon le format exact renvoyé par votre backend Django.
- */
-export interface ApiResponse<T> {
-    data: T;
-    message?: string;
-    // status?: number;
+export interface PaginatedResponse<T> {
+    count: number;
+    next: string | null;
+    previous: string | null;
+    results: T[];
+}
+
+function isPaginated<T>(data: any): data is PaginatedResponse<T> {
+    return typeof data === 'object' && data !== null && 'results' in data && 'count' in data;
 }
 
 export const ApiClient = {
     async get<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
         const response: AxiosResponse<T> = await axiosInstance.get(url, config);
+        if (isPaginated(response.data)) {
+            return response.data.results as T;
+        }
+        return response.data;
+    },
+
+    async getPaginated<T>(url: string, config?: AxiosRequestConfig): Promise<PaginatedResponse<T>> {
+        const response: AxiosResponse<PaginatedResponse<T>> = await axiosInstance.get(url, config);
         return response.data;
     },
 
