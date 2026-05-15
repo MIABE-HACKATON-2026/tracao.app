@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { useAdminStore } from "../stores/admin.store"; 
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, Cell, PieChart, Pie, Legend } from 'recharts';
 import { cn } from "../../../shared/lib/utils";
+import { AdminStatCard } from "../components/AdminUI";
 
 const COLORS = ['#D3A27F', '#8B5E3C', '#5C3D2E', '#3D2B1F', '#2196F3', '#4CAF50', '#FF9800'];
 
@@ -23,29 +24,38 @@ const AdminDashboard: React.FC = () => {
             </div>
 
             <div className="grid grid-cols-5 gap-4">
-                {[
-                    { icon: AdminUsersIcon, title: "Utilisateurs", value: stats?.users ? stats.users.reduce((acc: number, u: any) => acc + u.count, 0) : "0", color: "text-white", bg: "bg-cocoa", iconBg: "bg-white/20", detail: "Comptes globaux" },
-                    { icon: AdminCoopIcon, title: "Magasins", value: cooperatives.length || "0", color: "text-cocoa", bg: "bg-white/40", iconBg: "bg-cocoa-5", detail: "Coopératives" },
-                    { icon: AdminDashboardIcon, title: "Lots Production", value: stats?.batches ? stats.batches.reduce((acc: number, b: any) => acc + b.count, 0) : "0", color: "text-cocoa", bg: "bg-white/40", iconBg: "bg-cocoa-5", detail: "Traçabilité" },
-                    { icon: AdminBlockchainIcon, title: "Ancrages", value: stats?.blockchain ? stats.blockchain.reduce((acc: number, b: any) => acc + b.count, 0) : "0", color: "text-cocoa", bg: "bg-white/40", iconBg: "bg-[#E3F2FD]", iconColor: "text-[#2196F3]", detail: "Blockchain" },
-                    { icon: AdminFraudIcon, title: "Alertes", value: `${fraudAlerts.length}`, color: "text-cocoa", bg: "bg-white/40", iconBg: "bg-[#FFEBEE]", iconColor: "text-[#F44336]", detail: "Risques" },
-                ].map((card, i) => {
-                    const Icon = card.icon;
-                    return (
-                        <div key={i} className={cn("rounded-[16px] p-5 flex flex-col gap-4 border border-white/20 shadow-sm", card.bg)}>
-                            <div className="flex items-center gap-3">
-                                <div className={cn("h-10 w-10 rounded-full flex items-center justify-center", card.iconBg)}>
-                                    <Icon className={cn("h-5 w-5", card.iconColor || card.color)} />
-                                </div>
-                            </div>
-                            <div className="flex flex-col mt-1">
-                                <span className={cn("text-[12px] font-medium", card.color)}>{card.title}</span>
-                                <span className={cn("text-[11px] font-medium leading-none mt-2", card.color)}>{card.detail}</span>
-                            </div>
-                            <span className={cn("text-[28px] font-medium mt-auto leading-none", card.color)}>{card.value}</span>
-                        </div>
-                    );
-                })}
+                <AdminStatCard 
+                    title="Utilisateurs" 
+                    value={stats?.users ? stats.users.reduce((acc: number, u: any) => acc + u.count, 0) : "0"} 
+                    detail="Comptes globaux" 
+                    icon={AdminUsersIcon} 
+                    variant="primary" 
+                />
+                <AdminStatCard 
+                    title="Magasins" 
+                    value={cooperatives.length || "0"} 
+                    detail="Coopératives" 
+                    icon={AdminCoopIcon} 
+                />
+                <AdminStatCard 
+                    title="Lots Production" 
+                    value={stats?.batches ? stats.batches.reduce((acc: number, b: any) => acc + b.count, 0) : "0"} 
+                    detail="Traçabilité" 
+                    icon={AdminDashboardIcon} 
+                />
+                <AdminStatCard 
+                    title="Ancrages" 
+                    value={stats?.blockchain ? stats.blockchain.reduce((acc: number, b: any) => acc + b.count, 0) : "0"} 
+                    detail="Blockchain" 
+                    icon={AdminBlockchainIcon} 
+                />
+                <AdminStatCard 
+                    title="Alertes" 
+                    value={fraudAlerts.length} 
+                    detail="Risques" 
+                    icon={AdminFraudIcon} 
+                    variant={fraudAlerts.length > 0 ? "error" : "neutral"}
+                />
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

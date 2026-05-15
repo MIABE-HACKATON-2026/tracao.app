@@ -106,3 +106,36 @@ export const AdminFilterBtn: React.FC<{ active?: boolean, onClick: () => void, c
         <ChevronDownIcon className={cn("h-3 w-3 opacity-40 transition-transform", active && "rotate-180")} />
     </button>
 );
+
+export const AdminStatCard: React.FC<{ 
+    title: string, 
+    value: string | number, 
+    detail?: string, 
+    icon: React.FC<{ className?: string }>,
+    variant?: 'primary' | 'neutral' | 'success' | 'error',
+    className?: string
+}> = ({ title, value, detail, icon: Icon, variant = 'neutral', className }) => {
+    const styles = {
+        primary: { bg: "bg-cocoa text-white", iconBg: "bg-white/20", iconColor: "fill-white", titleColor: "text-white", detailColor: "text-white/60", valueColor: "text-white" },
+        neutral: { bg: "bg-white/40 text-cocoa", iconBg: "bg-cocoa-5", iconColor: "fill-cocoa-40", titleColor: "text-cocoa", detailColor: "text-cocoa-40", valueColor: "text-cocoa" },
+        success: { bg: "bg-white/40 text-cocoa", iconBg: "bg-[#E8F5E9]", iconColor: "fill-[#4CAF50]", titleColor: "text-cocoa", detailColor: "text-green-600", valueColor: "text-green-600" },
+        error: { bg: "bg-white/40 text-cocoa", iconBg: "bg-[#FFEBEE]", iconColor: "fill-[#F44336]", titleColor: "text-cocoa", detailColor: "text-red-500", valueColor: "text-red-500" },
+    };
+
+    const s = styles[variant];
+
+    return (
+        <div className={cn("rounded-[16px] p-5 flex flex-col gap-4 border border-white/20 shadow-sm", s.bg, className)}>
+            <div className="flex items-center gap-3">
+                <div className={cn("h-10 w-10 rounded-full flex items-center justify-center", s.iconBg)}>
+                    <Icon className={cn("h-5 w-5", s.iconColor)} />
+                </div>
+            </div>
+            <div className="flex flex-col mt-1">
+                <span className={cn("text-[12px] font-medium", s.titleColor)}>{title}</span>
+                {detail && <span className={cn("text-[11px] font-medium leading-none mt-2", s.detailColor)}>{detail}</span>}
+            </div>
+            <span className={cn("text-[28px] font-medium mt-auto leading-none", s.valueColor)}>{value}</span>
+        </div>
+    );
+};

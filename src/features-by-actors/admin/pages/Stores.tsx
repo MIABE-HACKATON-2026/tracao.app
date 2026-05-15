@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from "react";
 import { 
     FilterIcon, 
     SearchIcon, 
@@ -12,8 +11,9 @@ import {
     SlashIcon,
     CheckCircleIcon
 } from "../../../shared/components/icons";
+import { AdminCoopIcon } from "../components/admin-icons";
 import { useAdminStore } from "../stores/admin.store";
-import { AdminCard, AdminTableHeader, AdminTableRow, AdminTableCell, AdminBadge, AdminButton, AdminFilterBtn } from "../components/AdminUI";
+import { AdminCard, AdminTableHeader, AdminTableRow, AdminTableCell, AdminBadge, AdminButton, AdminFilterBtn, AdminStatCard } from "../components/AdminUI";
 import Modal from "../../../shared/components/atoms/Modal";
 import type { User } from "../types/admin.types";
 import { cn } from "../../../shared/lib/utils";
@@ -76,18 +76,27 @@ const Stores: React.FC = () => {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div className="bg-white/40 p-4 rounded-[16px] border border-white/20 flex flex-col gap-1 shadow-sm">
-                    <span className="text-[11px] text-cocoa-40 font-medium">Total Magasins</span>
-                    <span className="text-[24px] font-medium text-cocoa">{stores.length}</span>
-                </div>
-                <div className="bg-white/40 p-4 rounded-[16px] border border-white/20 flex flex-col gap-1 shadow-sm">
-                    <span className="text-[11px] text-cocoa-40 font-medium">Actifs</span>
-                    <span className="text-[24px] font-medium text-green-600">{stores.filter(s => s.is_active).length}</span>
-                </div>
-                <div className="bg-white/40 p-4 rounded-[16px] border border-white/20 flex flex-col gap-1 shadow-sm">
-                    <span className="text-[11px] text-cocoa-40 font-medium">Suspendus</span>
-                    <span className="text-[24px] font-medium text-red-500">{stores.filter(s => !s.is_active).length}</span>
-                </div>
+                <AdminStatCard 
+                    title="Total Magasins" 
+                    value={stores.length} 
+                    detail="Coopératives" 
+                    icon={AdminCoopIcon} 
+                    variant="primary" 
+                />
+                <AdminStatCard 
+                    title="Actifs" 
+                    value={stores.filter(s => s.is_active).length} 
+                    detail="En service" 
+                    icon={AdminCoopIcon} 
+                    variant="success" 
+                />
+                <AdminStatCard 
+                    title="Bloqués" 
+                    value={stores.filter(s => !s.is_active).length} 
+                    detail="Suspendus" 
+                    icon={AdminCoopIcon} 
+                    variant="error" 
+                />
             </div>
 
             <AdminCard>
